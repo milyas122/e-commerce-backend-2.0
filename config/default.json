@@ -1,0 +1,8 @@
+{
+  "PORT": "8000",
+  "DB_NAME": "e-commerce",
+  "DB_PASSWORD": "523221",
+  "DB_USERNAME": "root",
+  "DB_HOST": "localhost",
+  "DB_DIALECT": "mysql"
+}
