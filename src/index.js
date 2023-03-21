@@ -1,10 +1,8 @@
-const sequelize = require("./utils/database");
+const express = require("express");
+require("./utils/database"); // require DB Connection
+require("./models/User");
 
-sequelize
-  .sync({ force: true })
-  .then((result) => {
-    console.log(result);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+const app = express();
+
+//Middleware
+app.use(express.json());
