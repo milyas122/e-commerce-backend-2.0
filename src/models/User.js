@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../utils/database");
+const bcrypt = require("bcrypt");
 
 const User = sequelize.define("User", {
   id: {
@@ -18,6 +19,11 @@ const User = sequelize.define("User", {
   password: {
     type: DataTypes.STRING,
     allowNull: false,
+    set(value) {
+      const salt = bcrypt.genSaltSync(10);
+      const hashPassword = bcrypt.hashSync(value, salt);
+      this.setDataValue("password", hashPassword);
+    },
   },
   isSeller: {
     type: DataTypes.BOOLEAN,
@@ -28,7 +34,6 @@ const User = sequelize.define("User", {
   address: DataTypes.STRING,
   country: DataTypes.STRING,
   image: DataTypes.STRING,
-  //   user cart
 });
 
 module.exports = User;

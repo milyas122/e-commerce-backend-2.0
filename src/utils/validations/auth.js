@@ -1,4 +1,4 @@
-const { object, string, boolean, addMethod } = require("yup");
+const { lazy, object, string, boolean, addMethod } = require("yup");
 
 function checkPassword(message) {
   return this.test("isPasswordMatched", message, function (value) {
@@ -13,7 +13,7 @@ function checkPassword(message) {
 
 addMethod(string, "isPasswordMatched", checkPassword);
 
-const signupSchema = object({
+const signupSchema = object().shape({
   name: string().required(),
   email: string().email().required(),
   password: string().min(5).max(20).required(),

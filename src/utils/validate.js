@@ -5,6 +5,6 @@ module.exports = async function (schema, fields) {
     return await schema.validate(fields, { stripUnknown: true });
   } catch (e) {
     // console.log(e);
-    throw new ValidationError(e.errors.shift());
+    throw new ValidationError(e.errors);
   }
 };
