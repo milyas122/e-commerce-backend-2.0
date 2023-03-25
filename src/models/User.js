@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../utils/database");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const User = sequelize.define("User", {
   id: {
@@ -36,4 +37,14 @@ const User = sequelize.define("User", {
   image: DataTypes.STRING,
 });
 
+User.prototype.verifyPassword = async function (password) {
+  const result = await bcrypt.compare(password, this.password);
+  return result;
+};
+
+User.prototype.generateToken = async function () {
+  return jwt.sign({ email: this.email, id: this.id }, process.env.SECRET, {
+    expiresIn: "1h",
+  });
+};
 module.exports = User;
