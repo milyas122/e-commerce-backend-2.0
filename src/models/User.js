@@ -43,8 +43,12 @@ User.prototype.verifyPassword = async function (password) {
 };
 
 User.prototype.generateToken = async function () {
-  return jwt.sign({ email: this.email, id: this.id }, process.env.SECRET, {
-    expiresIn: "1h",
-  });
+  return jwt.sign(
+    { email: this.email, id: this.id, isSeller: this.isSeller },
+    process.env.SECRET,
+    {
+      expiresIn: "1h",
+    }
+  );
 };
 module.exports = User;

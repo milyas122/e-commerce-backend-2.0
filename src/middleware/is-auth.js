@@ -17,6 +17,6 @@ module.exports = async function (req, res, next) {
     if (err.name === "JsonWebTokenError") {
       return res.status(404).json({ message: "Provide a valid token" });
     }
-    return res.status(404).json({ message: "Internal Server Error" });
+    return res.status(404).json({ message: "Provide a valid token" });
   }
 };
