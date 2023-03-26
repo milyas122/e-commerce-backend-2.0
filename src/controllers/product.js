@@ -1,6 +1,9 @@
 const db = require("../models");
 const validate = require("../utils/validate");
-const { addProductSchema } = require("../utils/validations/product");
+const {
+  addProductSchema,
+  updateProductSchema,
+} = require("../utils/validations/product");
 
 // POST: products/add
 async function addProduct(req, res) {
@@ -36,4 +39,31 @@ async function getProduct(req, res) {
   }
 }
 
-module.exports = { addProduct, getProduct };
+// PUT: products/:id
+async function updateProduct(req, res) {
+  const id = req.params.id;
+
+  try {
+    const cleanFields = await validate(updateProductSchema, req.body);
+
+    if ("image" in cleanFields)
+      cleanFields["images"] = { ...cleanFields.images };
+
+    console.log(req.user.id);
+    const product = await db.Product.update(
+      { ...cleanFields },
+      { where: { id, seller: req.user.id } }
+    );
+
+    if (product[0] === 0)
+      return res.status(500).json({ message: "Unable to update product" });
+
+    return res.status(200).json({ message: "Updated" });
+  } catch (err) {
+    console.log(err);
+    const message = err.message || "Unable to update product";
+    return res.status(500).json({ message });
+  }
+}
+
+module.exports = { addProduct, getProduct, updateProduct };
