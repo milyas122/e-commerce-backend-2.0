@@ -19,4 +19,21 @@ async function addProduct(req, res) {
     return res.status(500).json({ message });
   }
 }
-module.exports = { addProduct };
+
+// GET: products/:id
+async function getProduct(req, res) {
+  const prodId = req.params.id;
+  try {
+    const product = await db.Product.findByPk(prodId);
+    if (!product)
+      return res
+        .status(201)
+        .json({ product: product, message: "Invalid Product Id" });
+    return res.status(201).json({ product: product, message: "Success" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Unable to get product detail" });
+  }
+}
+
+module.exports = { addProduct, getProduct };

@@ -6,5 +6,6 @@ const isSeller = require("../middleware/is-seller");
 const router = express.Router();
 
 router.post("/add", isAuth, isSeller, productController.addProduct);
+router.get("/:id", isAuth, productController.getProduct);
 
 module.exports = router;
