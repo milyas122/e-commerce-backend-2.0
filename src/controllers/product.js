@@ -66,4 +66,30 @@ async function updateProduct(req, res) {
   }
 }
 
-module.exports = { addProduct, getProduct, updateProduct };
+// GET: /products
+async function getAllProducts(req, res) {
+  const { page = 1, category } = req.query;
+  const limit = 2;
+  const offset = (page - 1) * limit;
+  // let products;
+  try {
+    const condition = category ? { category } : {};
+    console.log(condition);
+    const { count, rows } = await db.Product.findAndCountAll(
+      { where: condition },
+      offset,
+      limit
+    );
+
+    return res.status(200).json({
+      message: "Success",
+      products: rows,
+      totalPages: count,
+      currentPage: page,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Unable to get product detail" });
+  }
+}
+module.exports = { addProduct, getProduct, updateProduct, getAllProducts };
