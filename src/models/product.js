@@ -33,6 +33,20 @@ const Product = sequelize.define("Product", {
   //
 });
 
-User.hasMany(Product, { foreignKey: "seller" });
+User.hasMany(Product, {
+  foreignKey: "seller",
+});
+
+// Favorite Products
+User.belongsToMany(Product, {
+  through: "favoriteProducts",
+  as: "products",
+  onDelete: "CASCADE",
+});
+Product.belongsToMany(User, {
+  through: "favoriteProducts",
+  as: "users",
+  onDelete: "CASCADE",
+});
 
 module.exports = Product;
