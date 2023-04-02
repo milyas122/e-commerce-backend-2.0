@@ -30,7 +30,7 @@ async function addToCart(req, res) {
   }
 }
 
-//DELETE: /cart/remove/:id
+//GET: /cart/remove/:id
 async function removeFromCart(req, res) {
   const id = req.params.id;
   const userId = req.user.id;
@@ -47,4 +47,18 @@ async function removeFromCart(req, res) {
   }
 }
 
-module.exports = { addToCart, removeFromCart };
+//DELETE: /cart/delete
+async function deleteCart(req, res) {
+  const userId = req.user.id;
+  try {
+    const deleteCount = await db.Cart.destroy({ where: { userId } });
+    return res
+      .status(200)
+      .json({ deleteCount, message: "Deleted Successfully" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Error Occurred" });
+  }
+}
+
+module.exports = { addToCart, removeFromCart, deleteCart };
