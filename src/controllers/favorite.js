@@ -12,7 +12,7 @@ async function addProductToFavorite(req, res) {
     if (!product)
       return res.status(400).json({ message: "Product is invalid" });
 
-    await product.addUser(user);
+    await user.addFavoriteProduct(product);
 
     return res.status(200).json({ message: "Added to favorite successfully" });
   } catch (err) {
@@ -33,7 +33,7 @@ async function removeProductFromFavorite(req, res) {
     if (!product)
       return res.status(400).json({ message: "Product is invalid" });
 
-    await product.removeUser(user);
+    await user.removeFavoriteProduct(product);
 
     return res.status(200).json({ message: "Remove to favorite successfully" });
   } catch (err) {
@@ -41,4 +41,5 @@ async function removeProductFromFavorite(req, res) {
     return res.status(500).json({ message: "Error Occurred" });
   }
 }
+
 module.exports = { addProductToFavorite, removeProductFromFavorite };

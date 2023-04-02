@@ -51,4 +51,5 @@ User.prototype.generateToken = async function () {
     }
   );
 };
+
 module.exports = User;

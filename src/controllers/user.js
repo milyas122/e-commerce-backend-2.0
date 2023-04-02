@@ -51,6 +51,24 @@ async function updateProfile(req, res) {
   }
 }
 
-// favorite products
+// GET: api/users/products/favorite
+async function getUserFavoriteProducts(req, res) {
+  const userId = req.user.id;
+  try {
+    const user = await db.User.findByPk(userId);
+    console.log(db.User.prototype);
+    const favoriteProducts = await user.getFavoriteProducts();
 
-module.exports = { getUser, getAllUsers, updateProfile };
+    return res.status(200).json({ favoriteProducts });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Error Occurred" });
+  }
+}
+
+module.exports = {
+  getUser,
+  getAllUsers,
+  updateProfile,
+  getUserFavoriteProducts,
+};

@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, SequelizeScopeError, UUID } = require("sequelize");
 const sequelize = require("../utils/database");
 const User = require("./user");
 
@@ -33,19 +33,24 @@ const Product = sequelize.define("Product", {
   //
 });
 
+// Seller has many products
 User.hasMany(Product, {
   foreignKey: "seller",
 });
 
-// Favorite Products
+// User has many favorite Product
 User.belongsToMany(Product, {
-  through: "favoriteProducts",
-  as: "products",
+  through: "User_Fav_Product",
+  as: "favoriteProducts",
+  foreignKey: "user_id",
   onDelete: "CASCADE",
 });
+
+// A single product is add to favorite by many users
 Product.belongsToMany(User, {
-  through: "favoriteProducts",
-  as: "users",
+  through: "User_Fav_Product",
+  as: "usersFavorite",
+  foreignKey: "product_id",
   onDelete: "CASCADE",
 });
 
