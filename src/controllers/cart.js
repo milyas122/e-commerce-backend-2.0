@@ -7,7 +7,6 @@ async function addToCart(req, res) {
   let quantity = req.body.quantity || 1;
   let total;
   try {
-    console.log(db.User.prototype);
     const product = await db.Product.findOne({ where: { id: productId } });
     if (!product) {
       return res.status(400).json({ message: "Product not exist" });
@@ -31,4 +30,21 @@ async function addToCart(req, res) {
   }
 }
 
-module.exports = { addToCart };
+//DELETE: /cart/remove/:id
+async function removeFromCart(req, res) {
+  const id = req.params.id;
+  const userId = req.user.id;
+
+  try {
+    const cartItem = await db.Cart.destroy({ where: { id, userId } });
+    if (!cartItem) {
+      return res.status(400).json({ message: "Cart Id is invalid" });
+    }
+    return res.status(200).json({ message: "Success" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Error Occurred" });
+  }
+}
+
+module.exports = { addToCart, removeFromCart };
