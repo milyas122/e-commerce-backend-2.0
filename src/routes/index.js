@@ -3,6 +3,7 @@ const authRoutes = require("./auth");
 const userRoutes = require("./user");
 const productRoutes = require("./product");
 const favoriteRoutes = require("./favorite");
+const cartRoutes = require("./cart");
 
 const router = express.Router();
 
@@ -12,5 +13,6 @@ router.use("/auth", authRoutes);
 router.use("/users", userRoutes);
 router.use("/products", productRoutes);
 router.use("/favorite", favoriteRoutes);
+router.use("/cart", cartRoutes);
 
 module.exports = router;

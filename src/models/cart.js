@@ -21,11 +21,13 @@ const Cart = sequelize.define("Cart", {
 
 User.belongsToMany(Product, {
   through: Cart,
+  as: "userCartProducts",
   foreignKey: "userId",
   onDelete: "CASCADE",
 });
 Product.belongsToMany(User, {
   through: Cart,
+  as: "userCart",
   foreignKey: "productId",
   onDelete: "CASCADE",
 });
