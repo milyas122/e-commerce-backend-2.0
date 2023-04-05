@@ -12,15 +12,17 @@ async function addToCart(req, res) {
       return res.status(400).json({ message: "Product not exist" });
     }
     total = quantity * product.price;
-    const user = await db.User.findByPk(userId);
     const isCartExist = await db.Cart.findOne({ where: { userId, productId } });
 
     if (isCartExist) {
       total += isCartExist.total;
       quantity += isCartExist.quantity;
-      await user.setUserCartProducts(product, { through: { quantity, total } });
+      await await db.Cart.update(
+        { quantity, total },
+        { where: { id: isCartExist.id } }
+      );
     } else {
-      await user.addUserCartProduct(product, { through: { quantity, total } });
+      await db.Cart.create({ productId, userId, quantity, total });
     }
 
     return res.status(200).json({ message: "Success" });
@@ -61,4 +63,22 @@ async function deleteCart(req, res) {
   }
 }
 
-module.exports = { addToCart, removeFromCart, deleteCart };
+// GET: /cart
+async function getUserCart(req, res) {
+  try {
+    const userId = req.user.id;
+    const user = await db.User.findByPk(userId);
+
+    const cart = await user.getCartProducts({
+      include: [{ model: db.Product }],
+      attributes: { exclude: ["userId", "productId"] },
+    });
+
+    return res.status(200).json({ cart, message: "Success" });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ message: "Error Occurred" });
+  }
+}
+
+module.exports = { addToCart, removeFromCart, deleteCart, getUserCart };

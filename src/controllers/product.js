@@ -69,17 +69,17 @@ async function updateProduct(req, res) {
 // GET: /products
 async function getAllProducts(req, res) {
   const { page = 1, category } = req.query;
-  const limit = 2;
+  const limit = 1;
   const offset = (page - 1) * limit;
   // let products;
   try {
     const condition = category ? { category } : {};
-    console.log(condition);
-    const { count, rows } = await db.Product.findAndCountAll(
-      { where: condition },
+    // console.log(condition);
+    const { count, rows } = await db.Product.findAndCountAll({
+      where: condition,
       offset,
-      limit
-    );
+      limit,
+    });
 
     return res.status(200).json({
       message: "Success",
