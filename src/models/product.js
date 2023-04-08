@@ -1,4 +1,4 @@
-const { DataTypes, SequelizeScopeError, UUID } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const sequelize = require("../utils/database");
 const User = require("./user");
 
